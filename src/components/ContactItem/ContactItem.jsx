@@ -6,8 +6,10 @@ export default function ContactItem({ contacts, onDeleteContact }) {
   return (
     <div>
       <li key={contacts.id} className={style.contactItem}>
+        <div className={style.contacts}>
         <p>{contacts.name}</p>
         <p>{contacts.number} </p>
+        </div>
         <button
           type="button"
           className={style.formButton}
@@ -21,14 +23,8 @@ export default function ContactItem({ contacts, onDeleteContact }) {
 }
 
 ContactItem.propTypes = {
-    // contacts: PropTypes.arrayOf(
-    //     PropTypes.exact({
-    //     id: PropTypes.string.isRequired,
-    //     name: PropTypes.string.isRequired,
-    //     number: PropTypes.string.isRequired,
-    //   })
-    // ),
+  id: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
+  number: PropTypes.string.isRequired,
   onDeleteContact: PropTypes.func.isRequired,
 };
-
- 

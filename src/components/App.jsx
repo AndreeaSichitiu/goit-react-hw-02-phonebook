@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import ContactForm from './ContactForm/ContactForm';
+import { ContactForm } from './ContactForm/ContactForm';
 import ContactList from './ContactList/ContactList';
 import Filter from './Filter/Filter';
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
 
-// import { nanoid } from "nanoid";
+import { nanoid } from 'nanoid';
 
 export class App extends Component {
   state = {
@@ -17,35 +17,28 @@ export class App extends Component {
     filter: '',
   };
 
-   // handleFormSubmit = event => {
-  //   const { name, number } = event;
+  handleSubmit = event => {
+    const id = nanoid();
+    const name = event.name;
+    const number = event.number;
+    const contactsLists = [...this.state.contacts];
 
-  //   const includesName = this.state.contacts.find(
-  //     contact => contact.name.toLocaleLowerCase() === name.toLocaleLowerCase()
-  //   );
+    if (contactsLists.findIndex(contact => name === contact.name) !== -1) {
+      Notify.warning(
+              `${name} is already in contacts`,{
+                position: 'center-center',
+              })
+    } else {
+      contactsLists.push({ name, id, number });
+      Notify.success(
+              `${name} was successfully added to your contacts`,{
+                position: 'center-center',
+              })
+    }
 
-  //   if (includesName) {
-  //     return Notify.warning(
-  //       `${name} is already in contacts`,{
-  //         position: 'center-center',
-  //       }
-  //     );
-  //   } else {
-  //     let contact = { id: nanoid(), name: name, number: number };
-  //     this.setState(prevState => ({
-  //       contacts: [...prevState.contacts, contact],
-  //     }));
-  //     Notify.success(
-  //       `${name} was successfully added to your contacts`,{
-  //         position: 'center-center',
-  //       }
-        
-  //     );
-  //   }
-  // };
- 
-  
- 
+    this.setState({ contacts: contactsLists });
+  };
+
   onFilteredContacts = () => {
     const filterContactsList = this.state.contacts.filter(contact => {
       return contact.name
@@ -56,7 +49,6 @@ export class App extends Component {
     return filterContactsList;
   };
 
-
   handleChange = event => {
     const { name, value } = event.target;
     this.setState({ [name]: value });
@@ -66,23 +58,21 @@ export class App extends Component {
     this.setState(prev => ({
       contacts: prev.contacts.filter(contact => contact.id !== id),
     }));
-    Notify.info(
-      `${name} was successfully deleted from your contacts`,
-      {
-        position: 'center-center',
-      }
-    );
+    Notify.info(`${name} was successfully deleted from your contacts`, {
+      position: 'center-center',
+    });
   };
 
-
-
   render() {
-  const {filter} = this.state;
+    const { filter } = this.state;
     return (
       <>
-        <ContactForm />
-        <Filter filter={filter} handleChange={this.handleChange}  />
-        <ContactList contacts={this.onFilteredContacts()} onDeleteContact={this.onDeleteContact} />
+        <ContactForm handleSubmit={this.handleSubmit} />
+        <Filter filter={filter} handleChange={this.handleChange} />
+        <ContactList
+          contacts={this.onFilteredContacts()}
+          onDeleteContact={this.onDeleteContact}
+        />
       </>
     );
   }
