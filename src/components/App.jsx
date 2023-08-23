@@ -17,33 +17,34 @@ export class App extends Component {
     filter: '',
   };
 
-  // onSubmitForm = ({ name, number }) => {
-  //   const contact = { id: nanoid(), name, number };
-    
+   // handleFormSubmit = event => {
+  //   const { name, number } = event;
 
-  //   if (
-  //     this.state.contacts.find(
-  //       contact => contact.name.toLowerCase() === name.toLowerCase()
-  //     )
-  //   ) {
-  //     Notify.warning(
+  //   const includesName = this.state.contacts.find(
+  //     contact => contact.name.toLocaleLowerCase() === name.toLocaleLowerCase()
+  //   );
+
+  //   if (includesName) {
+  //     return Notify.warning(
   //       `${name} is already in contacts`,{
   //         position: 'center-center',
   //       }
   //     );
+  //   } else {
+  //     let contact = { id: nanoid(), name: name, number: number };
+  //     this.setState(prevState => ({
+  //       contacts: [...prevState.contacts, contact],
+  //     }));
+  //     Notify.success(
+  //       `${name} was successfully added to your contacts`,{
+  //         position: 'center-center',
+  //       }
+        
+  //     );
   //   }
-
-  //   this.setState(prevState => ({
-  //     contacts: [contact, ...prevState.contacts],
-  //   }));
-  //   Notify.success(
-  //     `${name} was successfully added to your contacts`,{
-  //       position: 'center-center',
-  //     }
-      
-  //   );
   // };
-
+ 
+  
  
   onFilteredContacts = () => {
     const filterContactsList = this.state.contacts.filter(contact => {
@@ -79,7 +80,7 @@ export class App extends Component {
   const {filter} = this.state;
     return (
       <>
-        <ContactForm  onSubmitForm={this.onSubmitForm} />
+        <ContactForm />
         <Filter filter={filter} handleChange={this.handleChange}  />
         <ContactList contacts={this.onFilteredContacts()} onDeleteContact={this.onDeleteContact} />
       </>
